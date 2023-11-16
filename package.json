@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "scripts": {
+    "codegen": "envio codegen",
+    "start": "node generated/src/Index.bs.js"
+  },
+  "devDependencies": {
+    "rescript": "10.1.4"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.1.2",
+    "envio": "0.0.22",
+    "ethers": "^5"
+  }
+}

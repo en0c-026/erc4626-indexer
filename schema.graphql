@@ -1,0 +1,29 @@
+type TokenVault {
+  id: String!
+  assets: BigInt!
+  assetsProportion: String!
+  shares: BigInt!
+  sharesProportion: String!
+  exchangeRate: String!
+  deposits: [Deposit!]! @derivedFrom(field: "vault")
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "vault")
+}
+
+type Deposit {
+  id: ID!
+  sender: String! 
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+  vault: TokenVault!
+}
+
+type Withdrawal {
+  id: ID!
+  sender: String!
+  receiver: String!
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+  vault: TokenVault!
+}
