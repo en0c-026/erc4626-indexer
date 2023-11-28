@@ -1,37 +1,30 @@
 const { ERC4626Contract } = require("../generated/src/Handlers.bs.js");
 const BigNumber = require('bignumber.js');
 
-const constants = {
-  assetDecimals: 6,
-  shareDecimals: 18
-}
-
 function addLiquidity(_assets, _shares, newAssets, newShares) {
-  const assets = new BigNumber(_assets).plus(newAssets);
-  const shares = new BigNumber(_shares).plus(newShares);
+  const assets = BigInt(_assets) + BigInt(newAssets);
+  const shares = BigInt(_shares) + BigInt(newShares);
   return { assets, shares };
 }
 
 function removeLiquidity(_assets, _shares, newAssets, newShares) {
-  const assets = new BigNumber(_assets).isGreaterThan(newAssets) ?
-    new BigNumber(_assets).minus(newAssets) : new BigNumber(newAssets).minus(_assets);
-
-  const shares = new BigNumber(_shares).isGreaterThan(newShares) ?
-    new BigNumber(_shares).minus(newShares) : new BigNumber(newShares).minus(_shares);
+  const assets = BigInt(_assets) > BigInt(newAssets) ? BigInt(_assets) - BigInt(newAssets) : BigInt(newAssets) - BigInt(_assets);
+  const shares = BigInt(_shares) > BigInt(newShares) ? BigInt(_shares) - BigInt(newShares) : BigInt(newShares) - BigInt(_shares);
 
   return { assets, shares };
 }
 
+
 function calculateRatioAndExchangeRate(_assets, _shares) {
-  const assets = new BigNumber(_assets).dividedBy(10 ** constants.assetDecimals);
-  const shares = new BigNumber(_shares).dividedBy(10 ** constants.shareDecimals);
-  const total = assets.plus(shares);
-  const assetsProportion = assets.dividedBy(total);
-  const sharesProportion = shares.dividedBy(total);
-  const exchangeRate = assets.dividedBy(shares);
+  const total = new BigNumber(_assets).plus(_shares);
+  const assetsProportion = new BigNumber(_assets).dividedBy(total).toFormat(2);
+  const sharesProportion = new BigNumber(_shares).dividedBy(total).toFormat(2);
+  const exchangeRate = new BigNumber(_assets).dividedBy(_shares).toFormat(2);
 
   return { assetsProportion, sharesProportion, exchangeRate };
 }
+
+
 
 ERC4626Contract.Deposit.loader((event, context) => {
   context.TokenVault.load(event.srcAddress.toString());
@@ -60,11 +53,11 @@ ERC4626Contract.Deposit.handler((event, context) => {
 
     context.TokenVault.set({
       id: vaultId,
-      assets: assets.toFixed(),
+      assets: assets,
       assetsProportion,
-      shares: shares.toFixed(),
+      shares: shares,
       sharesProportion,
-      exchangeRate: exchangeRate.toFixed()
+      exchangeRate: exchangeRate
     });
   } else {
     const {
@@ -79,7 +72,7 @@ ERC4626Contract.Deposit.handler((event, context) => {
       assetsProportion,
       shares: params.shares,
       sharesProportion,
-      exchangeRate: exchangeRate.toFixed()
+      exchangeRate: exchangeRate
     });
   }
 
@@ -105,6 +98,7 @@ ERC4626Contract.Withdraw.handler((event, context) => {
   let existingTokenVault = context.TokenVault.get(vaultId);
 
   if (existingTokenVault !== undefined) {
+
     const { assets, shares } = removeLiquidity(
       existingTokenVault.assets,
       existingTokenVault.shares,
@@ -120,13 +114,13 @@ ERC4626Contract.Withdraw.handler((event, context) => {
 
     context.TokenVault.set({
       id: vaultId,
-      assets: assets.toFixed(),
+      assets: assets,
       assetsProportion,
-      shares: shares.toFixed(),
+      shares: shares,
       sharesProportion,
-      exchangeRate: exchangeRate.toFixed()
+      exchangeRate: exchangeRate
     });
-  }
+  } 
 
   context.Withdrawal.set({
     id: withdrawalId,

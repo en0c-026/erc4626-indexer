@@ -1,12 +1,12 @@
 name: Erc4626
 description: Token Vault Indexer
 networks:
-  - id: 1
+  - id: 137
     start_block: 0
     contracts:
       - name: ERC4626
         abi_file_path: abis/erc4626-abi.json
-        address: "0x455fB969dC06c4Aa77e7db3f0686CC05164436d2"
+        address: "0x4A7CfE3ccE6E88479206Fefd7b4dcD738971e723"
         # address: "0x346a79030671cf252DE8D4d05D43f60812FA8057"
         handler: ./src/EventHandlers.js
         events:
