@@ -6,8 +6,7 @@ networks:
     contracts:
       - name: ERC4626
         abi_file_path: abis/erc4626-abi.json
-        address: "0x4A7CfE3ccE6E88479206Fefd7b4dcD738971e723"
-        # address: "0x346a79030671cf252DE8D4d05D43f60812FA8057"
+        address: "0x4A7CfE3ccE6E88479206Fefd7b4dcD738971e723" # ERC4626-Wrapped Aave v2 DAI (wa2-DAI)
         handler: ./src/EventHandlers.js
         events:
           - event: "Deposit"

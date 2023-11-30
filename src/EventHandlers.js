@@ -32,7 +32,7 @@ ERC4626Contract.Deposit.loader((event, context) => {
 
 ERC4626Contract.Deposit.handler((event, context) => {
   const vaultId = event.srcAddress.toString();
-  const depositId = event.transactionHash + event.logIndex;
+  const depositId = event.transactionHash + "-" + event.logIndex;
   const params = event.params;
 
   let existingTokenVault = context.TokenVault.get(vaultId);
@@ -92,7 +92,7 @@ ERC4626Contract.Withdraw.loader((event, context) => {
 
 ERC4626Contract.Withdraw.handler((event, context) => {
   const vaultId = event.srcAddress.toString();
-  const withdrawalId = event.transactionHash + event.logIndex;
+  const withdrawalId = event.transactionHash + "-" + event.logIndex;
   const params = event.params;
 
   let existingTokenVault = context.TokenVault.get(vaultId);
