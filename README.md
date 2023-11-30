@@ -1,6 +1,6 @@
 # ERC4626 Token Vault Indexer
 
-This repository contains an indexer for OpenZeppelin Tokenized Vault Contracts (ERC4626) that facilitates easy querying and presentation of tokenized vault events through a custom GraphQL API.
+This repository contains an indexer for OpenZeppelin Tokenized Vault Contracts (ERC4626) that facilitates easy querying and presentation of tokenized vault events through a custom GraphQL API with [Envio](https://docs.envio.dev).
 
 ## Schema and Event Details
 
